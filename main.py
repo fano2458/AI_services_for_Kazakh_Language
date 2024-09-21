@@ -1,16 +1,21 @@
 from fastapi import FastAPI, Request
 from pydantic import BaseModel
 from typing import Optional
+
 # from models.text_summarization import
+from models.irbis_llm import LLM
+
 
 app = FastAPI()
+
+# initialize llm once
+llm = LLM()
 
 class SummarizationRequest(BaseModel):
     text: str
 
 class AskLLM(BaseModel):
     prompt: str
-    question: str
 
 
 @app.post("/summarize")
@@ -28,6 +33,7 @@ async def summarize(request: SummarizationRequest):
 @app.post("/llm")
 async def ask_llm(request: AskLLM):
     prompt = request.prompt
-    question = request.question
 
-    return {}
+    answer = llm.ask_llm(prompt)
+
+    return {"response": answer}
