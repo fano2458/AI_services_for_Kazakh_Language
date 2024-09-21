@@ -2,4 +2,4 @@
 This repository contains API for CV/NLP models for kazakh language
 
 # To run
-fastapi dev main.py
+fastapi dev main.py & ngrok http http://localhost:8080
