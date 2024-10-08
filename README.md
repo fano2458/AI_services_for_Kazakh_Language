@@ -2,4 +2,4 @@
 This repository contains API for CV/NLP models for kazakh language
 
 # To run
-fastapi dev main.py & ngrok http http://localhost:8000
+fastapi dev main.py & ngrok http --domain=driven-cricket-publicly.ngrok-free.app 8000
