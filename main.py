@@ -2,15 +2,12 @@ from fastapi import FastAPI, Request
 from pydantic import BaseModel
 from typing import Optional
 
-# from models.text_summarization import
 from models.irbis_llm import LLM
 from models.ner import NER
+from models.tts_generate import TTS
 
 
 app = FastAPI()
-
-# initialize llm once
-# llm = LLM()
 
 class SummarizationRequest(BaseModel):
     text: str
@@ -21,6 +18,9 @@ class AskLLM(BaseModel):
 class FindNER(BaseModel):
     text: str
 
+class getTTS(BaseModel):
+    text: str
+
 
 @app.post("/summarize")
 async def summarize(request: SummarizationRequest):
@@ -28,7 +28,6 @@ async def summarize(request: SummarizationRequest):
 
     # summary = model.summarize(text, max_length)
     summary = f"This is text summary of {text}"
-
     summary_json = {"text": summary}
 
     return summary_json
@@ -40,7 +39,6 @@ async def ask_llm(request: AskLLM):
     llm = LLM()
     answer = llm.ask_llm(prompt)
     answer = ''.join(answer)
-    # answer = "response"
 
     return {"text": answer}
 
@@ -49,6 +47,15 @@ async def ask_llm(request: AskLLM):
 async def ner(request: FindNER):
     text = request.text
     ner = NER()
-
     result = ner.predict(text)
+    
+    return {'text': str(result)}
+
+
+@app.post("/tts")
+async def tts(request: getTTS):
+    text = request.text
+    tts_model = TTS()
+    result = tts_model.predict(text)
+
     return result

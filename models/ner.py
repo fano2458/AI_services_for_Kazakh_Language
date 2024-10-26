@@ -37,14 +37,15 @@ class NER():
             if i is None or i == previous_word_idx:
                 continue
             elif i != previous_word_idx:
-                labels.append(self.labels_dict[p])
+                try:
+                    labels.append(self.labels_dict[p][2:])
+                except:
+                    labels.append(self.labels_dict[p])
             previous_word_idx = i
-
 
         input_sent_tokens = re.findall(r"[\w’-]+|[.,#?!)(\]\[;:–—\"«№»/%&']", input_sent)
         assert len(input_sent_tokens) == len(labels), "Mismatch between input token and label sizes!"
         result_dict = {}
         for t,l in zip(input_sent_tokens, labels):
-            # print(t,l)
             result_dict[t] = l
         return result_dict
