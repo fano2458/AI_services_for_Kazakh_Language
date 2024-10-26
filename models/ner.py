@@ -5,7 +5,16 @@ from transformers import AutoTokenizer, AutoModelForTokenClassification
 
 
 class NER():
+    """
+    Named Entity Recognition (NER) class for identifying named entities in Kazakh text.
+    This class utilizes a pre-trained NER model to recognize various entity types such as persons, locations, organizations, etc.
+    """
     def __init__(self):
+        """
+        Initializes the NER model and tokenizer.
+        Loads the pre-trained NER model and tokenizer from the specified checkpoint.
+        """
+
         self.model_checkpoint = "weights/checkpoint-8.0"
 
         self.labels_dict = {0:"O", 1:"B-ADAGE", 2:"I-ADAGE", 3:"B-ART", 4:"I-ART", 5:"B-CARDINAL",
@@ -22,7 +31,17 @@ class NER():
         self.tokenizer = AutoTokenizer.from_pretrained(self.model_checkpoint)
         self.model = AutoModelForTokenClassification.from_pretrained(self.model_checkpoint)
 
-    def predict(self, input_sent = "Кеше Әйгерім Әбдібекова Абайдың «Қара сөздерінің» аудиодискісін 1000 теңгеге алды."):
+    def predict(self, input_sent):
+        """
+        Predicts named entities in the given input sentence.
+
+        Args:
+            input_sent (str, optional): The input sentence to be processed. Defaults to a sample Kazakh sentence.
+
+        Returns:
+            dict: A dictionary mapping tokens to their corresponding entity labels.
+        """
+        
         tokenized_inputs = self.tokenizer(input_sent, return_tensors="pt")
 
         output = self.model(**tokenized_inputs)

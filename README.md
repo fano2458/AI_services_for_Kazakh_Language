@@ -2,6 +2,12 @@
 This repository provides a user-friendly API that empowers developers to integrate cutting-edge computer vision (CV) and natural language processing (NLP) models specifically designed for the Kazakh language.
 
 
+# TODOs
+[ ] Optimal GPU utilization
+[ ] OCR, Image Captioning
+[ ] Remove dependencies from external libraries 
+[ ] ONNXRuntime for all models
+
 # Getting Started
 
 ## Prerequisites:

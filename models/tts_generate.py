@@ -7,7 +7,17 @@ from fastapi import Response
 
 
 class TTS():
+    """
+    Text-To-Speech (TTS) class for Kazakh language.
+    This class generates speech waveforms from a given text input. It utilizes a pre-trained Tacotron2 model
+    for text processing and a parallel WaveGAN model for waveform generation.
+    """
     def __init__(self):
+        """
+        Initializes the TTS model and vocoder.
+        Loads the pre-trained Tacotron2 model, WaveGAN vocoder, and sets their configurations.
+        """
+
         self.fs = 22050
 
         vocoder_checkpoint="/home/fano/Downloads/parallelwavegan_male1_checkpoint/checkpoint-400000steps.pkl"
@@ -30,6 +40,16 @@ class TTS():
         )
 
     def predict(self, sample_text):
+        """
+        Generates a speech waveform from the provided text.
+
+        Args:
+            sample_text (str): The text to be converted to speech.
+
+        Returns:
+            fastapi.Response: A FastAPI response object with the generated audio waveform as content.
+        """
+        
         with torch.no_grad():
             output_dict = self.text2speech(sample_text.lower())
             feat_gen = output_dict['feat_gen']
