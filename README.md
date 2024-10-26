@@ -3,10 +3,10 @@ This repository provides a user-friendly API that empowers developers to integra
 
 
 # TODOs
-[ ] Optimal GPU utilization
-[ ] OCR, Image Captioning
-[ ] Remove dependencies from external libraries 
-[ ] ONNXRuntime for all models
+- [ ] Optimal GPU utilization
+- [ ] OCR, Image Captioning
+- [ ] Remove dependencies from external libraries 
+- [ ] ONNXRuntime for all models
 
 # Getting Started
 
