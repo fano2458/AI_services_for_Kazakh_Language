@@ -1,9 +1,10 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile, File
 from pydantic import BaseModel
 
 from models.irbis_llm import LLM
 from models.ner import NER
 from models.tts_generate import TTS
+from models.image_caption import ImageCaptioningModel
 
 
 app = FastAPI()
@@ -14,6 +15,13 @@ class TextBasedRequest(BaseModel):
     Request body for all endpoints. (for now)
     """
     text: str
+
+
+class ImageBasedRequest(BaseModel):
+    """
+    Request body for image based requests.
+    """
+    image: UploadFile
 
 
 @app.post("/summarize")
@@ -62,3 +70,14 @@ async def tts(request: TextBasedRequest):
     result = tts_model.predict(request.text)
 
     return result
+
+
+@app.post("/image_caption")
+async def image_caption(file: UploadFile = File(...)):
+    """
+    Return description of provided image.
+    """
+    image_caption_model = ImageCaptioningModel()
+    result = image_caption_model.predict(file)
+
+    return {"text": result}
