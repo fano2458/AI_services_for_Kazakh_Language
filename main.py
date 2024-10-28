@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from models.irbis_llm import LLM
 from models.ner import NER
 from models.tts_generate import TTS
-from models.image_caption import ImageCaptioningModel
+from models.image_caption_onnx import ImageCaptioningModel
 
 
 app = FastAPI()

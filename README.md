@@ -17,7 +17,7 @@ This repository provides a user-friendly API that empowers developers to integra
 ## Installation:
 1) Clone this repository.
 2) Navigate to the project directory: cd AI_services_for_Kazakh_Language
-3) Install required dependencies: pip install -r requirements.txt
+3) Create conda environment with all the dependencies: conda env create --name my_env -f environment.yml
 
 ## Running the API:
 1) Start the API server: fastapi dev main.py (run this command in a separate terminal window)
