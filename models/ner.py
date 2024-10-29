@@ -1,5 +1,6 @@
 import re
 import numpy as np
+import json
 
 from transformers import AutoTokenizer, AutoModelForTokenClassification
 
@@ -65,6 +66,14 @@ class NER():
         input_sent_tokens = re.findall(r"[\w’-]+|[.,#?!)(\]\[;:–—\"«№»/%&']", input_sent)
         assert len(input_sent_tokens) == len(labels), "Mismatch between input token and label sizes!"
         result_dict = {}
+        words = []
+        classes = []
         for t,l in zip(input_sent_tokens, labels):
             result_dict[t] = l
-        return result_dict
+            words.append(t)
+            classes.append(l)
+
+        result_dict['words'] = words
+        result_dict['classes'] = classes
+
+        return json.dumps(result_dict, indent=4)

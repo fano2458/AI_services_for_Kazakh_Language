@@ -1,10 +1,11 @@
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI
 from pydantic import BaseModel
 
 from models.irbis_llm import LLM
 from models.ner import NER
 from models.tts_generate import TTS
 from models.image_caption_onnx import ImageCaptioningModel
+from models.ocr import OCRModel
 
 
 app = FastAPI()
@@ -15,13 +16,6 @@ class TextBasedRequest(BaseModel):
     Request body for all endpoints. (for now)
     """
     text: str
-
-
-class ImageBasedRequest(BaseModel):
-    """
-    Request body for image based requests.
-    """
-    image: UploadFile
 
 
 @app.post("/summarize")
@@ -58,7 +52,7 @@ async def ner(request: TextBasedRequest):
     ner = NER()
     result = ner.predict(request.text)
     
-    return {'text': str(result)}
+    return {'text': result}
 
 
 @app.post("/tts")
@@ -72,12 +66,23 @@ async def tts(request: TextBasedRequest):
     return result
 
 
-@app.post("/image_caption")
-async def image_caption(file: UploadFile = File(...)):
+@app.post("/image")
+async def image(request: TextBasedRequest):
     """
     Return description of provided image.
     """
     image_caption_model = ImageCaptioningModel()
-    result = image_caption_model.predict(file)
+    result = image_caption_model.predict(request.text)
+
+    return {"text": result}
+
+
+@app.post("/ocr")
+async def ocr(request: TextBasedRequest):
+    """
+    Get OCR predictions from image.
+    """
+    ocr_model = OCRModel()
+    result = ocr_model.predict(request.text)
 
     return {"text": result}

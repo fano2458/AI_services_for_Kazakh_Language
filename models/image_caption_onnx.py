@@ -2,8 +2,9 @@ import onnxruntime as ort
 from kaz_img_caption.utils.language_utils import tokens2description, preprocess_image, create_pad_mask, create_no_peak_and_pad_mask
 import pickle
 import numpy as np
-import shutil
 from PIL import Image
+import base64
+from io import BytesIO
 
 
 class ImageCaptioningModel():
@@ -59,12 +60,11 @@ class ImageCaptioningModel():
         self.atten_mask = cross_mask.unsqueeze(1).repeat(1, num_heads, 1, 1)
 
 
-    def predict(self, path):
-        file_path = f"kaz_img_caption/files/{path.filename}"
-        with open(file_path, "wb") as buffer:
-            shutil.copyfileobj(path.file, buffer)
-        
-        pil_image = preprocess_image(path.file, 384)
+    def predict(self, img):
+        img = base64.b64decode(img)
+        image_stream = BytesIO(img)
+        image = Image.open(image_stream)
+        pil_image = preprocess_image(image, 384)
         
         input_dict_1 = {'enc_x': pil_image.numpy(), 'sos_idx': np.array([self.sos_idx]),
                         'enc_mask': self.enc_mask.numpy(), 'fw_dec_mask': self.fw_dec_mask.numpy(),
